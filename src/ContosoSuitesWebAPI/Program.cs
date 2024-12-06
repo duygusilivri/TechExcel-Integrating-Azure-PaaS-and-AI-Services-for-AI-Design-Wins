@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.ChatCompletion;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -136,8 +137,8 @@ app.MapGet("/Vectorize", async (string text, [FromServices] IVectorizationServic
 // This endpoint is used to search for maintenance requests based on a vectorized query.
 app.MapPost("/VectorSearch", async ([FromBody] float[] queryVector, [FromServices] IVectorizationService vectorizationService, int max_results = 0, double minimum_similarity_score = 0.8) =>
 {
-    // Exercise 3 Task 3 TODO #3: Insert code to call the ExecuteVectorSearch function on the Vectorization Service. Don't forget to remove the NotImplementedException.
-    throw new NotImplementedException();
+     var results = await vectorizationService.ExecuteVectorSearch(queryVector, max_results, minimum_similarity_score);
+     return results;
 })
     .WithName("VectorSearch")
     .WithOpenApi();
